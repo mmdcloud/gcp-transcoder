@@ -4,7 +4,7 @@ data "google_client_config" "config" {}
 resource "google_pubsub_topic" "transcoder-topic" {
   name                       = "transcoder-topic"
   message_retention_duration = "86600s"
-  depends_on                 = [google_project_service.pubsub_api_service]
+
 }
 
 # ---------------------------------------------------------------------------------
@@ -14,7 +14,7 @@ resource "google_storage_bucket" "transcoder_source" {
   location                    = data.google_client_config.config.region
   force_destroy               = true
   uniform_bucket_level_access = true
-  depends_on                  = [google_project_service.storage_api_service]
+
 }
 
 resource "google_storage_bucket" "transcoder_destination" {
@@ -22,7 +22,7 @@ resource "google_storage_bucket" "transcoder_destination" {
   location                    = data.google_client_config.config.region
   force_destroy               = true
   uniform_bucket_level_access = true
-  depends_on                  = [google_project_service.storage_api_service]
+
 }
 
 # ---------------------------------------------------------------------------------
@@ -33,7 +33,6 @@ resource "google_storage_bucket" "transcoder_bucket" {
   force_destroy               = true
   location                    = data.google_client_config.config.region
   uniform_bucket_level_access = true
-  depends_on                  = [google_project_service.storage_api_service]
 }
 
 resource "google_storage_bucket_object" "transcoder_object" {
@@ -124,7 +123,6 @@ resource "google_storage_bucket" "transcoder_ad_break_insertion_bucket" {
   location                    = data.google_client_config.config.region
   force_destroy               = true
   uniform_bucket_level_access = true
-  depends_on                  = [google_project_service.storage_api_service]
 }
 
 resource "google_storage_bucket_object" "transcoder_ad_break_insertion_object" {
@@ -162,7 +160,6 @@ resource "google_storage_bucket" "transcoder_captions_subtitles_bucket" {
   location                    = data.google_client_config.config.region
   force_destroy               = true
   uniform_bucket_level_access = true
-  depends_on                  = [google_project_service.storage_api_service]
 }
 
 resource "google_storage_bucket_object" "transcoder_captions_subtitles_object" {
@@ -200,7 +197,6 @@ resource "google_storage_bucket" "transcoder_concatenate_multiple_video_input_bu
   location                    = data.google_client_config.config.region
   force_destroy               = true
   uniform_bucket_level_access = true
-  depends_on                  = [google_project_service.storage_api_service]
 }
 
 resource "google_storage_bucket_object" "transcoder_concatenate_multiple_video_input_object" {
@@ -238,7 +234,6 @@ resource "google_storage_bucket" "transcoder_crop_video_bucket" {
   location                    = data.google_client_config.config.region
   force_destroy               = true
   uniform_bucket_level_access = true
-  depends_on                  = [google_project_service.storage_api_service]
 }
 
 resource "google_storage_bucket_object" "transcoder_crop_video_object" {
@@ -276,7 +271,6 @@ resource "google_storage_bucket" "transcoder_generate_thumbnails_bucket" {
   location                    = data.google_client_config.config.region
   force_destroy               = true
   uniform_bucket_level_access = true
-  depends_on                  = [google_project_service.storage_api_service]
 }
 
 resource "google_storage_bucket_object" "transcoder_generate_thumbnails_object" {
@@ -314,7 +308,6 @@ resource "google_storage_bucket" "transcoder_overlay_creation_bucket" {
   location                    = data.google_client_config.config.region
   force_destroy               = true
   uniform_bucket_level_access = true
-  depends_on                  = [google_project_service.storage_api_service]
 }
 
 resource "google_storage_bucket_object" "transcoder_overlay_creation_object" {
@@ -358,7 +351,6 @@ resource "google_artifact_registry_repository" "transcoder_frontend" {
   docker_config {
     immutable_tags = true
   }
-  depends_on = [google_project_service.artifactregistry_api_service]
 }
 
 # ---------------------------------------------------------------------------------
