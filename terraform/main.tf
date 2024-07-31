@@ -1,4 +1,14 @@
 # Enabling necessary Google Service APIs
+resource "google_project_service" "pubsub_api_service" {
+  project = var.projectId
+  service = "pubsub.googleapis.com"
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+  disable_on_destroy = false
+}
+
 resource "google_project_service" "storage_api_service" {
   project = var.projectId
   service = "storage-component.googleapis.com"
@@ -46,16 +56,6 @@ resource "google_project_service" "artifactregistry_api_service" {
 resource "google_project_service" "transcoder_api_service" {
   project = var.projectId
   service = "transcoder.googleapis.com"
-  timeouts {
-    create = "30m"
-    update = "40m"
-  }
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "pubsub_api_service" {
-  project = var.projectId
-  service = "pubsub.googleapis.com"
   timeouts {
     create = "30m"
     update = "40m"
