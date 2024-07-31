@@ -501,18 +501,18 @@ resource "google_artifact_registry_repository" "transcoder_frontend" {
 #---------------------------------------------------------------------------------
 # API Gateway
 resource "google_api_gateway_api" "transcoder_api" {
-  provider = google-beta
-  api_id   = "transcoder-api"
+  #   provider = google-beta
+  api_id = "transcoder-api"
 }
 
 resource "google_api_gateway_api_config" "transcoder_api_config" {
-  provider      = google-beta
+  #   provider      = google-beta
   api           = google_api_gateway_api.transcoder_api.api_id
   api_config_id = "transcoder-api-config"
   openapi_documents {
     document {
-      path     = file("../../api-gateway/config.yaml")
-      contents = file("../../api-gateway/config.yaml")
+      path = file("../../api-gateway/config.yaml")
+      #   contents = file("../../api-gateway/config.yaml")
     }
   }
   lifecycle {
