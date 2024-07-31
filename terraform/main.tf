@@ -73,7 +73,7 @@ resource "google_project_service" "iam_api_service" {
   disable_on_destroy = false
 }
 
-resource "google_project_service" "iam_api_service" {
+resource "google_project_service" "dns_api_service" {
   project = var.projectId
   service = "dns.googleapis.com"
   timeouts {
