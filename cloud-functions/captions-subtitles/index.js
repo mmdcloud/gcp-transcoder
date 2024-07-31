@@ -2,10 +2,10 @@ const functions = require('@google-cloud/functions-framework');
 const { TranscoderServiceClient } =
 	require('@google-cloud/video-transcoder').v1;
 
-const projectId = 'custom-ground-424107-q4';
+const projectId = 'master-sector-430909-i0';
 const location = 'us-central1';
 const uri = 'gs://transcoder-destination/';
-const topic = "projects/custom-ground-424107-q4/topics/transcoder-topic";
+const topic = "projects/master-sector-430909-i0/topics/transcoder-topic";
 
 // Instantiates a transcoder client
 const transcoderServiceClient = new TranscoderServiceClient();
