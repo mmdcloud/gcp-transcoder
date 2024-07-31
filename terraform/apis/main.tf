@@ -145,3 +145,23 @@ resource "google_project_service" "serviceusage_api_service" {
   }
   disable_on_destroy = false
 }
+
+resource "google_project_service" "servicecontrol_api_service" {
+  project = data.google_project.project.number
+  service = "servicecontrol.googleapis.com"
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "servicemanagement_api_service" {
+  project = data.google_project.project.number
+  service = "servicemanagement.googleapis.com"
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+  disable_on_destroy = false
+}
