@@ -506,11 +506,13 @@ resource "google_api_gateway_api" "transcoder_api" {
 }
 
 resource "google_api_gateway_api_config" "transcoder_api_config" {
+  provider      = google-beta
   api           = google_api_gateway_api.transcoder_api.api_id
   api_config_id = "transcoder-api-config"
   openapi_documents {
     document {
-      path = file("../../api-gateway/config.yaml")
+      path     = file("../../api-gateway/config.yaml")
+      contents = file("../../api-gateway/config.yaml")
     }
   }
   lifecycle {
@@ -519,6 +521,7 @@ resource "google_api_gateway_api_config" "transcoder_api_config" {
 }
 
 resource "google_api_gateway_gateway" "transcoder_api_gateway" {
+  provider   = google-beta
   api_config = google_api_gateway_api_config.transcoder_api_config.id
   gateway_id = "transcoder-api-gateway"
 }
