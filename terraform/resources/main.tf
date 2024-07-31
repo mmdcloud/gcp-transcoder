@@ -4,7 +4,6 @@ data "google_client_config" "config" {}
 resource "google_pubsub_topic" "transcoder-topic" {
   name                       = "transcoder-topic"
   message_retention_duration = "86600s"
-
 }
 
 # ---------------------------------------------------------------------------------
@@ -14,7 +13,6 @@ resource "google_storage_bucket" "transcoder_source" {
   location                    = data.google_client_config.config.region
   force_destroy               = true
   uniform_bucket_level_access = true
-
 }
 
 resource "google_storage_bucket" "transcoder_destination" {
@@ -41,8 +39,7 @@ resource "google_storage_bucket_object" "transcoder_object" {
   source = "${path.module}/../../cloud-functions/transcode-function/file.zip"
 }
 
-data "google_storage_project_service_account" "gcs_account" {
-}
+data "google_storage_project_service_account" "gcs_account" {}
 
 resource "google_project_iam_member" "gcs-pubsub-publishing" {
   project = data.google_client_config.config.project
@@ -501,28 +498,27 @@ resource "google_artifact_registry_repository" "transcoder_frontend" {
 #   filename = "cloudbuild.yaml"
 # }
 
-# ---------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------
 # API Gateway
-# resource "google_api_gateway_api" "transcoder_api" {
-#   provider = google-beta
-#   api_id   = "transcoder-api"
-# }
+resource "google_api_gateway_api" "transcoder_api" {
+  provider = google-beta
+  api_id   = "transcoder-api"
+}
 
-# resource "google_api_gateway_api_config" "transcoder_api_config" {
-#   api           = google_api_gateway_api.transcoder_api.api_id
-#   api_config_id = "transcoder-api-config"
-#   openapi_documents {
-#     document {
-#       path     = "spec.yaml"
-#       contents = filebase64("test-fixtures/openapi.yaml")
-#     }
-#   }
-#   lifecycle {
-#     create_before_destroy = true
-#   }
-# }
+resource "google_api_gateway_api_config" "transcoder_api_config" {
+  api           = google_api_gateway_api.transcoder_api.api_id
+  api_config_id = "transcoder-api-config"
+  openapi_documents {
+    document {
+      path = file("../../api-gateway/config.yaml")
+    }
+  }
+  lifecycle {
+    create_before_destroy = true
+  }
+}
 
-# resource "google_api_gateway_gateway" "transcoder_api_gateway" {
-#   api_config = google_api_gateway_api_config.transcoder_api_config.id
-#   gateway_id = "transcoder-api-gateway"
-# }
+resource "google_api_gateway_gateway" "transcoder_api_gateway" {
+  api_config = google_api_gateway_api_config.transcoder_api_config.id
+  gateway_id = "transcoder-api-gateway"
+}
