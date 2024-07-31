@@ -13,6 +13,6 @@ provider "google" {
 }
 
 provider "google-beta" {
-  project = "my-project-id"
+  project = "master-sector-430909-i0"
   region  = "us-central1"
 }
