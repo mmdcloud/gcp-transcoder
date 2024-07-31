@@ -38,7 +38,7 @@ resource "google_storage_bucket" "transcoder_bucket" {
 resource "google_storage_bucket_object" "transcoder_object" {
   name   = "transcoder"
   bucket = google_storage_bucket.transcoder_bucket.name
-  source = "${path.module}/../cloud-functions/transcode-function/file.zip"
+  source = "${path.module}/../../cloud-functions/transcode-function/file.zip"
 }
 
 data "google_storage_project_service_account" "gcs_account" {
@@ -128,7 +128,7 @@ resource "google_storage_bucket" "transcoder_ad_break_insertion_bucket" {
 resource "google_storage_bucket_object" "transcoder_ad_break_insertion_object" {
   name   = "transcoder-ad-break-insertion"
   bucket = google_storage_bucket.transcoder_ad_break_insertion_bucket.name
-  source = "${path.module}/../cloud-functions/ad-break-insertion/file.zip"
+  source = "${path.module}/../../cloud-functions/ad-break-insertion/file.zip"
 }
 
 resource "google_cloudfunctions2_function" "transcoder_ad_break_insertion_function" {
@@ -165,7 +165,7 @@ resource "google_storage_bucket" "transcoder_captions_subtitles_bucket" {
 resource "google_storage_bucket_object" "transcoder_captions_subtitles_object" {
   name   = "transcoder-captions-subtitles"
   bucket = google_storage_bucket.transcoder_captions_subtitles_bucket.name
-  source = "${path.module}/../cloud-functions/captions-subtitles/file.zip"
+  source = "${path.module}/../../cloud-functions/captions-subtitles/file.zip"
 }
 
 resource "google_cloudfunctions2_function" "transcoder_captions_subtitles_function" {
@@ -202,7 +202,7 @@ resource "google_storage_bucket" "transcoder_concatenate_multiple_video_input_bu
 resource "google_storage_bucket_object" "transcoder_concatenate_multiple_video_input_object" {
   name   = "transcoder-concatenate-multiple-video-input"
   bucket = google_storage_bucket.transcoder_concatenate_multiple_video_input_bucket.name
-  source = "${path.module}/../cloud-functions/concatenate-multiple-video-input/file.zip"
+  source = "${path.module}/../../cloud-functions/concatenate-multiple-video-input/file.zip"
 }
 
 resource "google_cloudfunctions2_function" "transcoder_concatenate_multiple_video_input_function" {
@@ -239,7 +239,7 @@ resource "google_storage_bucket" "transcoder_crop_video_bucket" {
 resource "google_storage_bucket_object" "transcoder_crop_video_object" {
   name   = "transcoder-crop-video"
   bucket = google_storage_bucket.transcoder_crop_video_bucket.name
-  source = "${path.module}/../cloud-functions/crop-video/file.zip"
+  source = "${path.module}/../../cloud-functions/crop-video/file.zip"
 }
 
 resource "google_cloudfunctions2_function" "transcoder_crop_video_function" {
@@ -276,7 +276,7 @@ resource "google_storage_bucket" "transcoder_generate_thumbnails_bucket" {
 resource "google_storage_bucket_object" "transcoder_generate_thumbnails_object" {
   name   = "transcoder-generate-thumbnails"
   bucket = google_storage_bucket.transcoder_generate_thumbnails_bucket.name
-  source = "${path.module}/../cloud-functions/generate-thumbnails/file.zip"
+  source = "${path.module}/../../cloud-functions/generate-thumbnails/file.zip"
 }
 
 resource "google_cloudfunctions2_function" "transcoder_generate_thumbnails_function" {
@@ -313,7 +313,7 @@ resource "google_storage_bucket" "transcoder_overlay_creation_bucket" {
 resource "google_storage_bucket_object" "transcoder_overlay_creation_object" {
   name   = "transcoder-overlay-creation"
   bucket = google_storage_bucket.transcoder_overlay_creation_bucket.name
-  source = "${path.module}/../cloud-functions/overlay-creation/file.zip"
+  source = "${path.module}/../../cloud-functions/overlay-creation/file.zip"
 }
 
 resource "google_cloudfunctions2_function" "function" {
