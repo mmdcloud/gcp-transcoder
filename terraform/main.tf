@@ -133,6 +133,16 @@ resource "google_project_service" "firestore_api_service" {
   disable_on_destroy = false
 }
 
+resource "google_project_service" "serviceusage_api_service" {
+  project = var.projectId
+  service = "serviceusage.googleapis.com"
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+  disable_on_destroy = false
+}
+
 # ------------------------------------------------------------------------------
 
 # Pub/Sub Topic for Transcoder job notfications
