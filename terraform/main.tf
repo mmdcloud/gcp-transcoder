@@ -4,11 +4,29 @@ resource "google_pubsub_topic" "transcoder-topic" {
   message_retention_duration = "86600s"
 }
 
+# ---------------------------------------------------------------------------------
+# Cloud Storage buckets for source and destination
+resource "google_storage_bucket" "transcoder_source" {
+  name                        = "transcoder-source-madmax"
+  location                    = var.region
+  force_destroy               = true
+  uniform_bucket_level_access = true
+}
+
+resource "google_storage_bucket" "transcoder_destination" {
+  name                        = "transcoder-destination-madmax"
+  location                    = var.region
+  force_destroy               = true
+  uniform_bucket_level_access = true
+}
+
+# ---------------------------------------------------------------------------------
 # Cloud Functions
 # 1 . Transcode Function
 resource "google_storage_bucket" "transcoder_bucket" {
   name                        = "transcoder-madmax"
-  location                    = "us-central1"
+  force_destroy               = true
+  location                    = var.region
   uniform_bucket_level_access = true
 }
 
@@ -20,7 +38,7 @@ resource "google_storage_bucket_object" "transcoder_object" {
 
 resource "google_cloudfunctions2_function" "transcoder_function" {
   name        = "transcoder"
-  location    = "us-central1"
+  location    = var.region
   description = "transcoder"
 
   build_config {
@@ -39,6 +57,16 @@ resource "google_cloudfunctions2_function" "transcoder_function" {
     available_memory   = "256M"
     timeout_seconds    = 60
   }
+  event_trigger {
+    event_type     = "google.cloud.storage.object.v1.finalized"
+    trigger_region = var.region
+    retry_policy   = "RETRY_POLICY_RETRY"
+    # service_account_email = google_service_account.account.email
+    event_filters {
+      attribute = "bucket"
+      value     = google_storage_bucket.transcoder_source.name
+    }
+  }
 }
 
 # ---------------------------------------------------------------------------------
@@ -46,7 +74,8 @@ resource "google_cloudfunctions2_function" "transcoder_function" {
 # 2 . Ad Break Insertion 
 resource "google_storage_bucket" "transcoder_ad_break_insertion_bucket" {
   name                        = "transcoder-ad-break-insertion-madmax"
-  location                    = "us-central1"
+  location                    = var.region
+  force_destroy               = true
   uniform_bucket_level_access = true
 }
 
@@ -58,7 +87,7 @@ resource "google_storage_bucket_object" "transcoder_ad_break_insertion_object" {
 
 resource "google_cloudfunctions2_function" "transcoder_ad_break_insertion_function" {
   name        = "transcoder-ad-break-insertion"
-  location    = "us-central1"
+  location    = var.region
   description = "transcoder-ad-break-insertion"
 
   build_config {
@@ -82,7 +111,8 @@ resource "google_cloudfunctions2_function" "transcoder_ad_break_insertion_functi
 # 3 . Captions & Subtitles
 resource "google_storage_bucket" "transcoder_captions_subtitles_bucket" {
   name                        = "transcoder-captions-subtitles-madmax"
-  location                    = "us-central1"
+  location                    = var.region
+  force_destroy               = true
   uniform_bucket_level_access = true
 }
 
@@ -94,7 +124,7 @@ resource "google_storage_bucket_object" "transcoder_captions_subtitles_object" {
 
 resource "google_cloudfunctions2_function" "transcoder_captions_subtitles_function" {
   name        = "transcoder-captions-subtitles"
-  location    = "us-central1"
+  location    = var.region
   description = "transcoder-captions-subtitles"
 
   build_config {
@@ -118,7 +148,8 @@ resource "google_cloudfunctions2_function" "transcoder_captions_subtitles_functi
 # 4 . Concatenate multiple video input
 resource "google_storage_bucket" "transcoder_concatenate_multiple_video_input_bucket" {
   name                        = "transcoder-concatenate-multiple-video-input-madmax"
-  location                    = "us-central1"
+  location                    = var.region
+  force_destroy               = true
   uniform_bucket_level_access = true
 }
 
@@ -130,7 +161,7 @@ resource "google_storage_bucket_object" "transcoder_concatenate_multiple_video_i
 
 resource "google_cloudfunctions2_function" "transcoder_concatenate_multiple_video_input_function" {
   name        = "transcoder-concatenate-multiple-video-input"
-  location    = "us-central1"
+  location    = var.region
   description = "transcoder-concatenate-multiple-video-input"
 
   build_config {
@@ -154,7 +185,8 @@ resource "google_cloudfunctions2_function" "transcoder_concatenate_multiple_vide
 # 5 . Crop Video
 resource "google_storage_bucket" "transcoder_crop_video_bucket" {
   name                        = "transcoder-crop-video-madmax"
-  location                    = "us-central1"
+  location                    = var.region
+  force_destroy               = true
   uniform_bucket_level_access = true
 }
 
@@ -166,7 +198,7 @@ resource "google_storage_bucket_object" "transcoder_crop_video_object" {
 
 resource "google_cloudfunctions2_function" "transcoder_crop_video_function" {
   name        = "transcoder-crop-video"
-  location    = "us-central1"
+  location    = var.region
   description = "transcoder-crop-video"
 
   build_config {
@@ -190,7 +222,8 @@ resource "google_cloudfunctions2_function" "transcoder_crop_video_function" {
 # 6 . Generate Thumbnails
 resource "google_storage_bucket" "transcoder_generate_thumbnails_bucket" {
   name                        = "transcoder-generate-thumbnails-madmax"
-  location                    = "us-central1"
+  location                    = var.region
+  force_destroy               = true
   uniform_bucket_level_access = true
 }
 
@@ -202,7 +235,7 @@ resource "google_storage_bucket_object" "transcoder_generate_thumbnails_object" 
 
 resource "google_cloudfunctions2_function" "transcoder_generate_thumbnails_function" {
   name        = "transcoder-generate-thumbnails"
-  location    = "us-central1"
+  location    = var.region
   description = "transcoder-generate-thumbnails"
 
   build_config {
@@ -226,7 +259,8 @@ resource "google_cloudfunctions2_function" "transcoder_generate_thumbnails_funct
 # 7 . Overlay Creation
 resource "google_storage_bucket" "transcoder_overlay_creation_bucket" {
   name                        = "transcoder-overlay-creation-madmax"
-  location                    = "us-central1"
+  location                    = var.region
+  force_destroy               = true
   uniform_bucket_level_access = true
 }
 
@@ -238,7 +272,7 @@ resource "google_storage_bucket_object" "transcoder_overlay_creation_object" {
 
 resource "google_cloudfunctions2_function" "function" {
   name        = "transcoder-overlay-creation"
-  location    = "us-central1"
+  location    = var.region
   description = "transcoder-overlay-creation"
 
   build_config {
@@ -263,7 +297,7 @@ resource "google_cloudfunctions2_function" "function" {
 
 # Artifact registry to store Docker artifacts for frontend
 resource "google_artifact_registry_repository" "transcoder_frontend" {
-  location      = "us-central1"
+  location      = var.region
   repository_id = "transcoderfrontendmadmax"
   description   = "transcoder_frontend"
   format        = "DOCKER"
@@ -277,7 +311,7 @@ resource "google_artifact_registry_repository" "transcoder_frontend" {
 # Cloud Run service for hosting frontend
 # resource "google_cloud_run_v2_service" "transcoder_frontend" {
 #   name     = "transcoder-frontend"
-#   location = "us-central1"
+#   location = var.region
 #   ingress  = "INGRESS_TRAFFIC_ALL"
 
 #   template {
@@ -286,27 +320,13 @@ resource "google_artifact_registry_repository" "transcoder_frontend" {
 #       max_instance_count = 10
 #     }
 #     containers {
-#       image = "us-central1-docker.pkg.dev/${var.projectId}/${google_artifact_registry_repository.transcoder_frontend.name}/IMAGE:latest"
+#       image = "${var.region}-docker.pkg.dev/${var.projectId}/${google_artifact_registry_repository.transcoder_frontend.name}/IMAGE:latest"
 #       ports {
 #         container_port = 3000
 #       }
 #     }
 #   }
 # }
-
-# ---------------------------------------------------------------------------------
-# Cloud Storage buckets for source and destination
-resource "google_storage_bucket" "transcoder_source" {
-  name                        = "transcoder-source-madmax"
-  location                    = "us-central1"
-  uniform_bucket_level_access = true
-}
-
-resource "google_storage_bucket" "transcoder_destination" {
-  name                        = "transcoder-destination-madmax"
-  location                    = "us-central1"
-  uniform_bucket_level_access = true
-}
 
 # ---------------------------------------------------------------------------------
 # Firestore database
@@ -350,7 +370,7 @@ resource "google_storage_bucket" "transcoder_destination" {
 #   replication {
 #     user_managed {
 #       replicas {
-#         location = "us-central1"
+#         location = var.region
 #       }
 #       replicas {
 #         location = "us-east1"
@@ -420,7 +440,7 @@ resource "google_storage_bucket" "transcoder_destination" {
 # ---------------------------------------------------------------------------------
 # Cloud Build
 # resource "google_cloudbuild_trigger" "filename-trigger" {
-#   location = "us-central1"
+#   location = var.region
 
 #   trigger_template {
 #     branch_name = "main"
