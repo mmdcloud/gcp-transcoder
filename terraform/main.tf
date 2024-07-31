@@ -1,3 +1,140 @@
+# Enabling necessary Google Service APIs
+resource "google_project_service" "storage_api_service" {
+  project = var.projectId
+  service = "storage-component.googleapis.com"
+
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "cloudrun_api_service" {
+  project = var.projectId
+  service = "run.googleapis.com"
+
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "cloudfunctions_api_service" {
+  project = var.projectId
+  service = "cloudfunctions.googleapis.com"
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "artifactregistry_api_service" {
+  project = var.projectId
+  service = "artifactregistry.googleapis.com"
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "transcoder_api_service" {
+  project = var.projectId
+  service = "transcoder.googleapis.com"
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "pubsub_api_service" {
+  project = var.projectId
+  service = "pubsub.googleapis.com"
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "iam_api_service" {
+  project = var.projectId
+  service = "iam.googleapis.com"
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "iam_api_service" {
+  project = var.projectId
+  service = "dns.googleapis.com"
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "cloudbuild_api_service" {
+  project = var.projectId
+  service = "cloudbuild.googleapis.com"
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "apigateway_api_service" {
+  project = var.projectId
+  service = "apigateway.googleapis.com"
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "certificatemanager_api_service" {
+  project = var.projectId
+  service = "certificatemanager.googleapis.com"
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "secretmanager_api_service" {
+  project = var.projectId
+  service = "secretmanager.googleapis.com"
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "firestore_api_service" {
+  project = var.projectId
+  service = "firestore.googleapis.com"
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+  disable_on_destroy = false
+}
+
+# ------------------------------------------------------------------------------
+
 # Pub/Sub Topic for Transcoder job notfications
 resource "google_pubsub_topic" "transcoder-topic" {
   name                       = "transcoder-topic"
