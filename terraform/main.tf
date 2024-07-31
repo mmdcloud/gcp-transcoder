@@ -7,7 +7,7 @@ resource "google_pubsub_topic" "transcoder-topic" {
 # Cloud Functions
 # 1 . Transcode Function
 resource "google_storage_bucket" "transcoder_bucket" {
-  name                        = "transcoder"
+  name                        = "transcoder-madmax"
   location                    = "us-central1"
   uniform_bucket_level_access = true
 }
@@ -45,7 +45,7 @@ resource "google_cloudfunctions2_function" "transcoder_function" {
 
 # 2 . Ad Break Insertion 
 resource "google_storage_bucket" "transcoder_ad_break_insertion_bucket" {
-  name                        = "transcoder-ad-break-insertion"
+  name                        = "transcoder-ad-break-insertion-madmax"
   location                    = "us-central1"
   uniform_bucket_level_access = true
 }
@@ -53,7 +53,7 @@ resource "google_storage_bucket" "transcoder_ad_break_insertion_bucket" {
 resource "google_storage_bucket_object" "transcoder_ad_break_insertion_object" {
   name   = "transcoder-ad-break-insertion"
   bucket = google_storage_bucket.transcoder_ad_break_insertion_bucket.name
-  source = "${path.module}/../cloud-functions/ad-break-function/file.zip"
+  source = "${path.module}/../cloud-functions/ad-break-insertion/file.zip"
 }
 
 resource "google_cloudfunctions2_function" "transcoder_ad_break_insertion_function" {
@@ -81,7 +81,7 @@ resource "google_cloudfunctions2_function" "transcoder_ad_break_insertion_functi
 
 # 3 . Captions & Subtitles
 resource "google_storage_bucket" "transcoder_captions_subtitles_bucket" {
-  name                        = "transcoder-captions-subtitles"
+  name                        = "transcoder-captions-subtitles-madmax"
   location                    = "us-central1"
   uniform_bucket_level_access = true
 }
@@ -117,7 +117,7 @@ resource "google_cloudfunctions2_function" "transcoder_captions_subtitles_functi
 
 # 4 . Concatenate multiple video input
 resource "google_storage_bucket" "transcoder_concatenate_multiple_video_input_bucket" {
-  name                        = "transcoder-concatenate-multiple-video-input"
+  name                        = "transcoder-concatenate-multiple-video-input-madmax"
   location                    = "us-central1"
   uniform_bucket_level_access = true
 }
@@ -153,7 +153,7 @@ resource "google_cloudfunctions2_function" "transcoder_concatenate_multiple_vide
 
 # 5 . Crop Video
 resource "google_storage_bucket" "transcoder_crop_video_bucket" {
-  name                        = "transcoder-crop-video"
+  name                        = "transcoder-crop-video-madmax"
   location                    = "us-central1"
   uniform_bucket_level_access = true
 }
@@ -189,7 +189,7 @@ resource "google_cloudfunctions2_function" "transcoder_crop_video_function" {
 
 # 6 . Generate Thumbnails
 resource "google_storage_bucket" "transcoder_generate_thumbnails_bucket" {
-  name                        = "transcoder-generate-thumbnails"
+  name                        = "transcoder-generate-thumbnails-madmax"
   location                    = "us-central1"
   uniform_bucket_level_access = true
 }
@@ -225,7 +225,7 @@ resource "google_cloudfunctions2_function" "transcoder_generate_thumbnails_funct
 
 # 7 . Overlay Creation
 resource "google_storage_bucket" "transcoder_overlay_creation_bucket" {
-  name                        = "transcoder-overlay-creation"
+  name                        = "transcoder-overlay-creation-madmax"
   location                    = "us-central1"
   uniform_bucket_level_access = true
 }
@@ -264,7 +264,7 @@ resource "google_cloudfunctions2_function" "function" {
 # Artifact registry to store Docker artifacts for frontend
 resource "google_artifact_registry_repository" "transcoder_frontend" {
   location      = "us-central1"
-  repository_id = "transcoder_frontend"
+  repository_id = "transcoderfrontendmadmax"
   description   = "transcoder_frontend"
   format        = "DOCKER"
 
@@ -297,13 +297,13 @@ resource "google_artifact_registry_repository" "transcoder_frontend" {
 # ---------------------------------------------------------------------------------
 # Cloud Storage buckets for source and destination
 resource "google_storage_bucket" "transcoder_source" {
-  name                        = "transcoder-source"
+  name                        = "transcoder-source-madmax"
   location                    = "us-central1"
   uniform_bucket_level_access = true
 }
 
 resource "google_storage_bucket" "transcoder_destination" {
-  name                        = "transcoder-destination"
+  name                        = "transcoder-destination-madmax"
   location                    = "us-central1"
   uniform_bucket_level_access = true
 }
