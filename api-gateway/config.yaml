@@ -15,7 +15,7 @@ paths:
         - application/json
       operationId: generateThumbnails
       x-google-backend:
-        address: https://asia-south1-custom-ground-424107-q4.cloudfunctions.net/transcoder-generate-thumbnails
+        address: https://us-central1-custom-ground-424107-q4.cloudfunctions.net/transcoder-generate-thumbnails
       responses:
         "200":
           description: Successful response
@@ -28,7 +28,7 @@ paths:
         - application/json
       operationId: adBreakInsertion
       x-google-backend:
-        address: https://asia-south1-custom-ground-424107-q4.cloudfunctions.net/transcoder-ad-break-insertion
+        address: https://us-central1-custom-ground-424107-q4.cloudfunctions.net/transcoder-ad-break-insertion
       responses:
         "200":
           description: Successful response
@@ -41,7 +41,7 @@ paths:
         - application/json
       operationId: captionsAndSubtitles
       x-google-backend:
-        address: https://asia-south1-custom-ground-424107-q4.cloudfunctions.net/transcoder-captions-subtitles
+        address: https://us-central1-custom-ground-424107-q4.cloudfunctions.net/transcoder-captions-subtitles
       responses:
         "200":
           description: Successful response
@@ -54,7 +54,7 @@ paths:
         - application/json
       operationId: cropVideo
       x-google-backend:
-        address: https://asia-south1-custom-ground-424107-q4.cloudfunctions.net/transcoder-crop-video
+        address: https://us-central1-custom-ground-424107-q4.cloudfunctions.net/transcoder-crop-video
       responses:
         "200":
           description: Successful response
@@ -67,7 +67,7 @@ paths:
         - application/json
       operationId: overlayCreation
       x-google-backend:
-        address: https://asia-south1-custom-ground-424107-q4.cloudfunctions.net/transcoder-overlay-creation
+        address: https://us-central1-custom-ground-424107-q4.cloudfunctions.net/transcoder-overlay-creation
       responses:
         "200":
           description: Successful response
@@ -80,7 +80,7 @@ paths:
         - application/json
       operationId: concatenateMultipleVideoInput
       x-google-backend:
-        address: https://asia-south1-custom-ground-424107-q4.cloudfunctions.net/transcoder-concatenate-multiple-video-input
+        address: https://us-central1-custom-ground-424107-q4.cloudfunctions.net/transcoder-concatenate-multiple-video-input
       responses:
         "200":
           description: Successful response

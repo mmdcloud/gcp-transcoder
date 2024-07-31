@@ -5,7 +5,7 @@ const {TranscoderServiceClient} =
   require('@google-cloud/video-transcoder').v1;
   
 const projectId = 'custom-ground-424107-q4';
-const location = 'asia-south1';
+const location = 'us-central1';
 const uri = 'gs://transcoder-destination/';
 const topic = "projects/custom-ground-424107-q4/topics/transcoder-topic";
 
