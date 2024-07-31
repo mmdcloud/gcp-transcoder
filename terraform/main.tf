@@ -36,7 +36,46 @@ resource "google_storage_bucket_object" "transcoder_object" {
   source = "${path.module}/../cloud-functions/transcode-function/file.zip"
 }
 
+data "google_storage_project_service_account" "gcs_account" {
+}
+
+resource "google_project_iam_member" "gcs-pubsub-publishing" {
+  project = "my-project-name"
+  role    = "roles/pubsub.publisher"
+  member  = "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"
+}
+
+resource "google_service_account" "account" {
+  account_id   = "gcf-sa"
+  display_name = "Test Service Account - used for both the cloud function and eventarc trigger in the test"
+}
+
+resource "google_project_iam_member" "invoking" {
+  project    = "my-project-name"
+  role       = "roles/run.invoker"
+  member     = "serviceAccount:${google_service_account.account.email}"
+  depends_on = [google_project_iam_member.gcs-pubsub-publishing]
+}
+
+resource "google_project_iam_member" "event-receiving" {
+  project    = "my-project-name"
+  role       = "roles/eventarc.eventReceiver"
+  member     = "serviceAccount:${google_service_account.account.email}"
+  depends_on = [google_project_iam_member.invoking]
+}
+
+resource "google_project_iam_member" "artifactregistry-reader" {
+  project    = "my-project-name"
+  role       = "roles/artifactregistry.reader"
+  member     = "serviceAccount:${google_service_account.account.email}"
+  depends_on = [google_project_iam_member.event-receiving]
+}
+
 resource "google_cloudfunctions2_function" "transcoder_function" {
+  depends_on = [
+    google_project_iam_member.event-receiving,
+    google_project_iam_member.artifactregistry-reader,
+  ]
   name        = "transcoder"
   location    = var.region
   description = "transcoder"
@@ -53,15 +92,17 @@ resource "google_cloudfunctions2_function" "transcoder_function" {
   }
 
   service_config {
-    max_instance_count = 1
-    available_memory   = "256M"
-    timeout_seconds    = 60
+    max_instance_count    = 1
+    available_memory      = "256M"
+    timeout_seconds       = 60
+    service_account_email = google_service_account.account.email
   }
+
   event_trigger {
-    event_type     = "google.cloud.storage.object.v1.finalized"
-    trigger_region = var.region
-    retry_policy   = "RETRY_POLICY_RETRY"
-    # service_account_email = google_service_account.account.email
+    event_type            = "google.cloud.storage.object.v1.finalized"
+    trigger_region        = var.region
+    retry_policy          = "RETRY_POLICY_RETRY"
+    service_account_email = google_service_account.account.email
     event_filters {
       attribute = "bucket"
       value     = google_storage_bucket.transcoder_source.name
