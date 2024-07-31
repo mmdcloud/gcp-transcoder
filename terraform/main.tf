@@ -40,7 +40,7 @@ data "google_storage_project_service_account" "gcs_account" {
 }
 
 resource "google_project_iam_member" "gcs-pubsub-publishing" {
-  project = "my-project-name"
+  project = var.projectId
   role    = "roles/pubsub.publisher"
   member  = "serviceAccount:${data.google_storage_project_service_account.gcs_account.email_address}"
 }
@@ -51,21 +51,21 @@ resource "google_service_account" "account" {
 }
 
 resource "google_project_iam_member" "invoking" {
-  project    = "my-project-name"
+  project    = var.projectId
   role       = "roles/run.invoker"
   member     = "serviceAccount:${google_service_account.account.email}"
   depends_on = [google_project_iam_member.gcs-pubsub-publishing]
 }
 
 resource "google_project_iam_member" "event-receiving" {
-  project    = "my-project-name"
+  project    = var.projectId
   role       = "roles/eventarc.eventReceiver"
   member     = "serviceAccount:${google_service_account.account.email}"
   depends_on = [google_project_iam_member.invoking]
 }
 
 resource "google_project_iam_member" "artifactregistry-reader" {
-  project    = "my-project-name"
+  project    = var.projectId
   role       = "roles/artifactregistry.reader"
   member     = "serviceAccount:${google_service_account.account.email}"
   depends_on = [google_project_iam_member.event-receiving]
@@ -372,7 +372,7 @@ resource "google_artifact_registry_repository" "transcoder_frontend" {
 # ---------------------------------------------------------------------------------
 # Firestore database
 # resource "google_firestore_database" "database" {
-#   project                           = "my-project-name"
+#   project                           = var.projectId
 #   name                              = "database-id"
 #   location_id                       = "nam5"
 #   type                              = "FIRESTORE_NATIVE"
@@ -392,7 +392,7 @@ resource "google_artifact_registry_repository" "transcoder_frontend" {
 
 # resource "google_firebase_android_app" "basic" {
 #   provider      = google-beta
-#   project       = "my-project-name"
+#   project       = var.projectId
 #   display_name  = "Display Name Basic"
 #   package_name  = "android.package.app"
 #   sha1_hashes   = ["2145bdf698b8715039bd0e83f2069bed435ac21c"]
