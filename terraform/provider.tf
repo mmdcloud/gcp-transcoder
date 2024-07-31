@@ -2,12 +2,17 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "4.51.0"
+      version = "5.38.0"
     }
   }
 }
 
 provider "google" {
-  project = "custom-ground-424107-q4"
+  project = "master-sector-430909-i0"
+  region  = "us-central1"
+}
+
+provider "google-beta" {
+  project = "my-project-id"
   region  = "us-central1"
 }
